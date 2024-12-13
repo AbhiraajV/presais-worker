@@ -7,10 +7,9 @@ export async function sendMail(userId:string,reportId:string) {
   const user = await prisma.user.findFirst({where:{
     id:userId
   }})
-  if(!user) return;
   const { data, error } = await resend.emails.send({
     from: 'Acme <onboarding@resend.dev>',
-    to: [user.email],
+    to: [user?.email ?? 'abhiraajverma@gmail.com'],
     subject: 'SaaS idea analysis report is ready',
     html: `
         <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">

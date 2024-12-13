@@ -2,7 +2,7 @@ import { JsonValue } from "@prisma/client/runtime/library";
 import { totalAnalysis } from "./analysis.api";
 import { findCompetition } from "./findcomp.ai"
 import { writeDataToReport } from "./prisma.functions";
-import { sendMail } from "./resend";
+import { sendMail } from "./mail";
 
 export const main = async (prompt:string,userId:string): Promise<{
     id: string;

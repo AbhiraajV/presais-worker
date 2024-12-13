@@ -3,9 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 const RABBITMQ_URL = process.env.AMQ_URI!;
 const QUEUE_NAME = 'single';
-
-// import { findCompetition } from "./functions/findcomp.ai";
-// import { totalAnalysis } from './functions/analysis.api';
 import { main } from './functions';
 
 async function startRabbitMQListener() {
@@ -34,3 +31,5 @@ async function startRabbitMQListener() {
 }
 
 startRabbitMQListener();
+
+// sendMail('',"").then(() => {console.log('send')}).catch(e=>console.error(e))
