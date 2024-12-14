@@ -73,7 +73,7 @@ export const totalAnalysis = async (
   domains: string[]
 ): Promise<{ analysis_report: any[]; competition_report: any[] }> => {
   const RATE_LIMIT = 5;
-  const TIME_INTERVAL = 1000; // 1 second
+  const TIME_INTERVAL = 1200; // 1 second
   const rateLimiter = createRateLimiter(RATE_LIMIT, TIME_INTERVAL);
 
   const analysis_report: any[] = [];

@@ -15,7 +15,7 @@ type CompetitorsSchema = {
 
 export const findCompetition = async (saasDescription:string): Promise<CompetitorsSchema> => {
     const response = await openai.chat.completions.create({
-                model: "gpt-4o",
+                model: "gpt-4o-mini",
                 messages: [
                     {
                     "role": "system",
@@ -80,6 +80,8 @@ export const findCompetition = async (saasDescription:string): Promise<Competito
                 frequency_penalty: 0,
                 presence_penalty: 0
     });
+
+    console.log({p:response.usage?.prompt_tokens,q:response.usage?.completion_tokens,r:response.usage?.total_tokens})
 
     return JSON.parse(response.choices[0].message.content!) as unknown as CompetitorsSchema
 }
