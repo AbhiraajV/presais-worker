@@ -48,23 +48,19 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
         "json_schema": {
         "name": "ideaAssessment",
         "strict": true,
-       
         "schema": {
     "type": "object",
     "properties": {
       "ideaAssessment": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "businessExistence": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "status": {
-                "type": "string",
-                "enum": [
-                  "unique_twist",
-                  "exists",
-                  "not_exists"
-                ]
+                "type": "string"
               },
               "description": {
                 "type": "string"
@@ -73,14 +69,15 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
             "required": [
               "status",
               "description"
-            ],
-            "additionalProperties": false
+            ]
           },
           "competitorAnalysis": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "keywordOpportunityInsights": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "summary": {
                     "type": "string"
@@ -89,30 +86,26 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "type": "array",
                     "items": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "name": {
                           "type": "string"
                         },
                         "competitionLevel": {
-                          "type": "string",
-                          "enum": [
-                            "Low",
-                            "Medium",
-                            "High"
-                          ]
+                          "type": "string"
                         }
                       },
                       "required": [
                         "name",
                         "competitionLevel"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "topKeywords": {
                     "type": "array",
                     "items": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "name": {
                           "type": "string"
@@ -124,12 +117,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                           "type": "number"
                         },
                         "competitionLevel": {
-                          "type": "string",
-                          "enum": [
-                            "Low",
-                            "Medium",
-                            "High"
-                          ]
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -137,8 +125,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "volume",
                         "CPC",
                         "competitionLevel"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "conclusion": {
@@ -150,11 +137,11 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                   "recommendedKeywords",
                   "topKeywords",
                   "conclusion"
-                ],
-                "additionalProperties": false
+                ]
               },
               "marketGapVisualization": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "opportunities": {
                     "type": "array",
@@ -172,24 +159,25 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                 "required": [
                   "opportunities",
                   "threats"
-                ],
-                "additionalProperties": false
+                ]
               }
             },
             "required": [
               "keywordOpportunityInsights",
               "marketGapVisualization"
-            ],
-            "additionalProperties": false
+            ]
           },
           "trafficSourceOptimizationSuggestions": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "competitorTrends": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "search": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
                       "description": {
                         "type": "string"
@@ -201,11 +189,11 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "required": [
                       "description",
                       "percentage"
-                    ],
-                    "additionalProperties": false
+                    ]
                   },
                   "direct": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
                       "description": {
                         "type": "string"
@@ -217,15 +205,64 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "required": [
                       "description",
                       "percentage"
-                    ],
-                    "additionalProperties": false
+                    ]
+                  },
+                  "social": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "percentage"
+                    ]
+                  },
+                  "referals": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "percentage"
+                    ]
+                  },
+                  "mails": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "percentage"
+                    ]
                   }
                 },
                 "required": [
                   "search",
-                  "direct"
-                ],
-                "additionalProperties": false
+                  "direct",
+                  "social",
+                  "referals",
+                  "mails"
+                ]
               },
               "recommendation": {
                 "type": "string"
@@ -234,16 +271,42 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
             "required": [
               "competitorTrends",
               "recommendation"
-            ],
-            "additionalProperties": false
+            ]
           },
           "globalAndLocalCompetitorHeatmap": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "dominantCountries": {
                 "type": "array",
                 "items": {
                   "type": "string"
+                }
+              },
+              "countryWiseDistribution": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "country": {
+                      "type": "string"
+                    },
+                    "trafficShare": {
+                      "type": "number"
+                    },
+                    "competitors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "country",
+                    "trafficShare",
+                    "competitors"
+                  ]
                 }
               },
               "recommendation": {
@@ -252,17 +315,19 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
             },
             "required": [
               "dominantCountries",
+              "countryWiseDistribution",
               "recommendation"
-            ],
-            "additionalProperties": false
+            ]
           },
           "estimatedMarketShareProjection": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "currentCompetitors": {
                 "type": "array",
                 "items": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "title": {
                       "type": "string"
@@ -278,18 +343,19 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "title",
                     "visits",
                     "marketShare"
-                  ],
-                  "additionalProperties": false
+                  ]
                 }
               },
               "potentialShare": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "description": {
                     "type": "string"
                   },
                   "range": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
                       "min": {
                         "type": "number"
@@ -301,28 +367,27 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "required": [
                       "min",
                       "max"
-                    ],
-                    "additionalProperties": false
+                    ]
                   }
                 },
                 "required": [
                   "description",
                   "range"
-                ],
-                "additionalProperties": false
+                ]
               }
             },
             "required": [
               "currentCompetitors",
               "potentialShare"
-            ],
-            "additionalProperties": false
+            ]
           },
           "customSaaSPerformanceScore": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "criteria": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "uniqueness": {
                     "type": "number"
@@ -342,8 +407,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                   "marketDemand",
                   "competition",
                   "executionComplexity"
-                ],
-                "additionalProperties": false
+                ]
               },
               "score": {
                 "type": "number"
@@ -352,14 +416,15 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
             "required": [
               "criteria",
               "score"
-            ],
-            "additionalProperties": false
+            ]
           },
           "adBudgetRecommendations": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "searchAds": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "budget": {
                     "type": "string"
@@ -371,11 +436,11 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                 "required": [
                   "budget",
                   "focus"
-                ],
-                "additionalProperties": false
+                ]
               },
               "socialMediaAds": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "budget": {
                     "type": "string"
@@ -387,15 +452,50 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                 "required": [
                   "budget",
                   "focus"
-                ],
-                "additionalProperties": false
+                ]
               }
             },
             "required": [
               "searchAds",
               "socialMediaAds"
-            ],
-            "additionalProperties": false
+            ]
+          },
+          "marketSizeAnalysis": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "totalMarketSize": {
+                "type": "number"
+              },
+              "monthlyActiveUsers": {
+                "type": "number"
+              },
+              "growthTrend": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "rate": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "description",
+                  "rate"
+                ]
+              },
+              "recommendation": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "totalMarketSize",
+              "monthlyActiveUsers",
+              "growthTrend",
+              "recommendation"
+            ]
           }
         },
         "required": [
@@ -405,9 +505,9 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
           "globalAndLocalCompetitorHeatmap",
           "estimatedMarketShareProjection",
           "customSaaSPerformanceScore",
-          "adBudgetRecommendations"
-        ],
-        "additionalProperties": false
+          "adBudgetRecommendations",
+          "marketSizeAnalysis"
+        ]
       }
     },
     "required": [
