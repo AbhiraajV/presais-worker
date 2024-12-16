@@ -7,34 +7,43 @@ const openai = new OpenAI({
 export const getInsights = async (cont:string): Promise<unknown> => {
    
     const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "gpt-4o",
     messages: [
         {
         "role": "system",
         "content": [
             {
             "type": "text",
-            "text": `You are an advanced AI specialized in SaaS market analysis and competitor insights. Your task is to analyze the data provided by a user regarding their SaaS idea and its competitors. Based on this analysis, you will output a JSON object adhering to the specified data structure. Follow these instructions carefully:
-            
-                Understand the User's SaaS Idea:
-                KEEP IN MIND TO GIVE A LOW SCORE AND REVIEW IF YOU THINK THE IDEA IS NOT UNIQUE AND SHOULD BE DITCHED AS THERE IS TOO MUCH COMPETITION
-You must understand the users data very carefully before analysing everything, give usefull suggestions on what they can do to their buissness to capture the untapped market that you understand from the given data!
-Extract the key value proposition, unique features, and primary target audience of the user's SaaS idea from the input data.
-Identify whether the SaaS idea is entirely novel, has a unique twist on an existing business, or is an improvement of an existing concept.
-Analyze Competitor Data:
+            "text": `
+              You are an AI specializing in SaaS market analysis. Analyze the user’s SaaS idea and its competitors using the provided data. Based on your analysis, generate a concise JSON with the following insights:
 
-Evaluate the competitors provided in terms of market share, user traffic, and any other relevant KPIs shared by the user.
-Identify gaps or opportunities in the market that the user's SaaS idea can leverage.
-Generate Insights:
-Based on the analysis, populate the following fields in the JSON structure:
+              Business Existence:
 
-Keyword Opportunity Insights: Provide insights on keywords relevant to the user's SaaS, identifying opportunities where competition is low and relevance is high. Suggest recommended keywords with their competition level.
-Market Gap Visualization: Highlight opportunities the user's SaaS can exploit and threats they need to mitigate.
-Traffic Source Optimization Suggestions: Analyze traffic patterns of competitors and recommend strategies for the user's SaaS to optimize its traffic sources.
-Global and Local Competitor Heatmap: Identify regions or countries where the user can expand based on competitor performance and market gaps.
-Estimated Market Share Projection: Provide an analysis of potential market share for the user's SaaS, considering competitors and market conditions.
-Custom SaaS Performance Score: Evaluate the SaaS idea on uniqueness, market demand, competition, and execution complexity to calculate a performance score out of 10.
-Ad Budget Recommendations: Suggest budget allocations and areas of focus for both search and social media ads.
+              Provide a mix of positive and negative insights using short statements and actions.
+              status shoudl be: Existing, Unique but Existing, Difficult to Stand Against Competition, Untapped Market Potential, Room for Innovation etc...
+              Highlight competitors' strengths, weaknesses, and what the user can do to differentiate or improve.
+              Keyword Opportunity Insights:
+
+              Identify low-competition, high-relevance keywords and suggest areas to target.
+              Market Gap Visualization:
+
+              Highlight opportunities and threats the user can capitalize on.
+              Traffic Source Optimization Suggestions:
+
+              Analyze competitor traffic and suggest ways to optimize the user's traffic sources.
+              Global and Local Competitor Heatmap:
+
+              Identify regions with competitor strength/weakness, suggesting market expansion opportunities.
+              Estimated Market Share Projection:
+
+              Estimate the potential market share considering competitors and market conditions.
+              Custom SaaS Performance Score:
+
+              Score the idea (1-10) based on uniqueness, demand, competition, and complexity.
+              Ad Budget Recommendations:
+
+              Suggest budget allocations for search and social media ads with focus areas.
+              Action: Provide concise, actionable insights based on the analysis, and suggest improvements or alternatives if the idea lacks uniqueness or is in a saturated market.
             `
             }
         ]
@@ -57,21 +66,35 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
         "additionalProperties": false,
         "properties": {
           "businessExistence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "status": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "status",
-              "description"
-            ]
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string"
+    },
+    "description": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["negative", "positive"]
           },
+          "statement": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "statement", "action"]
+      }
+    }
+  },
+  "required": ["status", "description"]
+},
           "competitorAnalysis": {
             "type": "object",
             "additionalProperties": false,
@@ -96,10 +119,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                           "type": "string"
                         }
                       },
-                      "required": [
-                        "name",
-                        "competitionLevel"
-                      ]
+                      "required": ["name", "competitionLevel"]
                     }
                   },
                   "topKeywords": {
@@ -121,24 +141,14 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                           "type": "string"
                         }
                       },
-                      "required": [
-                        "name",
-                        "volume",
-                        "CPC",
-                        "competitionLevel"
-                      ]
+                      "required": ["name", "volume", "CPC", "competitionLevel"]
                     }
                   },
                   "conclusion": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "summary",
-                  "recommendedKeywords",
-                  "topKeywords",
-                  "conclusion"
-                ]
+                "required": ["summary", "recommendedKeywords", "topKeywords", "conclusion"]
               },
               "marketGapVisualization": {
                 "type": "object",
@@ -157,16 +167,10 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     }
                   }
                 },
-                "required": [
-                  "opportunities",
-                  "threats"
-                ]
+                "required": ["opportunities", "threats"]
               }
             },
-            "required": [
-              "keywordOpportunityInsights",
-              "marketGapVisualization"
-            ]
+            "required": ["keywordOpportunityInsights", "marketGapVisualization"]
           },
           "trafficSourceOptimizationSuggestions": {
             "type": "object",
@@ -187,10 +191,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "description",
-                      "percentage"
-                    ]
+                    "required": ["description", "percentage"]
                   },
                   "direct": {
                     "type": "object",
@@ -203,10 +204,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "description",
-                      "percentage"
-                    ]
+                    "required": ["description", "percentage"]
                   },
                   "social": {
                     "type": "object",
@@ -219,10 +217,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "description",
-                      "percentage"
-                    ]
+                    "required": ["description", "percentage"]
                   },
                   "referals": {
                     "type": "object",
@@ -235,10 +230,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "description",
-                      "percentage"
-                    ]
+                    "required": ["description", "percentage"]
                   },
                   "mails": {
                     "type": "object",
@@ -251,28 +243,16 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "description",
-                      "percentage"
-                    ]
+                    "required": ["description", "percentage"]
                   }
                 },
-                "required": [
-                  "search",
-                  "direct",
-                  "social",
-                  "referals",
-                  "mails"
-                ]
+                "required": ["search", "direct", "social", "referals", "mails"]
               },
               "recommendation": {
                 "type": "string"
               }
             },
-            "required": [
-              "competitorTrends",
-              "recommendation"
-            ]
+            "required": ["competitorTrends", "recommendation"]
           },
           "globalAndLocalCompetitorHeatmap": {
             "type": "object",
@@ -303,22 +283,14 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                       }
                     }
                   },
-                  "required": [
-                    "country",
-                    "trafficShare",
-                    "competitors"
-                  ]
+                  "required": ["country", "trafficShare", "competitors"]
                 }
               },
               "recommendation": {
                 "type": "string"
               }
             },
-            "required": [
-              "dominantCountries",
-              "countryWiseDistribution",
-              "recommendation"
-            ]
+            "required": ["dominantCountries", "countryWiseDistribution", "recommendation"]
           },
           "estimatedMarketShareProjection": {
             "type": "object",
@@ -340,11 +312,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "title",
-                    "visits",
-                    "marketShare"
-                  ]
+                  "required": ["title", "visits", "marketShare"]
                 }
               },
               "potentialShare": {
@@ -365,22 +333,13 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "min",
-                      "max"
-                    ]
+                    "required": ["min", "max"]
                   }
                 },
-                "required": [
-                  "description",
-                  "range"
-                ]
+                "required": ["description", "range"]
               }
             },
-            "required": [
-              "currentCompetitors",
-              "potentialShare"
-            ]
+            "required": ["currentCompetitors", "potentialShare"]
           },
           "customSaaSPerformanceScore": {
             "type": "object",
@@ -403,21 +362,13 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "type": "number"
                   }
                 },
-                "required": [
-                  "uniqueness",
-                  "marketDemand",
-                  "competition",
-                  "executionComplexity"
-                ]
+                "required": ["uniqueness", "marketDemand", "competition", "executionComplexity"]
               },
               "score": {
                 "type": "number"
               }
             },
-            "required": [
-              "criteria",
-              "score"
-            ]
+            "required": ["criteria", "score"]
           },
           "adBudgetRecommendations": {
             "type": "object",
@@ -434,10 +385,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "type": "string"
                   }
                 },
-                "required": [
-                  "budget",
-                  "focus"
-                ]
+                "required": ["budget", "focus"]
               },
               "socialMediaAds": {
                 "type": "object",
@@ -450,16 +398,10 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "type": "string"
                   }
                 },
-                "required": [
-                  "budget",
-                  "focus"
-                ]
+                "required": ["budget", "focus"]
               }
             },
-            "required": [
-              "searchAds",
-              "socialMediaAds"
-            ]
+            "required": ["searchAds", "socialMediaAds"]
           },
           "marketSizeAnalysis": {
             "type": "object",
@@ -482,21 +424,13 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
                     "type": "number"
                   }
                 },
-                "required": [
-                  "description",
-                  "rate"
-                ]
+                "required": ["description", "rate"]
               },
               "recommendation": {
                 "type": "string"
               }
             },
-            "required": [
-              "totalMarketSize",
-              "monthlyActiveUsers",
-              "growthTrend",
-              "recommendation"
-            ]
+            "required": ["totalMarketSize", "monthlyActiveUsers", "growthTrend", "recommendation"]
           }
         },
         "required": [
@@ -511,9 +445,7 @@ Ad Budget Recommendations: Suggest budget allocations and areas of focus for bot
         ]
       }
     },
-    "required": [
-      "ideaAssessment"
-    ],
+    "required": ["ideaAssessment"],
     "additionalProperties": false
   },
         }
