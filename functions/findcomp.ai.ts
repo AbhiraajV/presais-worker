@@ -22,7 +22,12 @@ export const findCompetition = async (saasDescription:string): Promise<Competito
                     "content": [
                         {
                         "type": "text",
-                        "text": "User will describe their saas, and how many competitors they are looking for. You must respond only in JSON format an array of n number of competitors currently in market in order of popularity.\nThis is the format for the output\n"
+                        "text": `User will describe their saas, and how many competitors they are looking for. 
+                        
+                        You must respond only in JSON format an array of n number of 
+                        competitors currently in market who are specifically in the niche the user is in, do not give a broad list but try to be as close the user's product as possible!
+                        .\nThis is the format for the output\n`
+
                         }
                     ]
                     },
@@ -45,22 +50,12 @@ export const findCompetition = async (saasDescription:string): Promise<Competito
                             "items": {
                             "type": "object",
                             "properties": {
-                                "Name": {
-                                "type": "string",
-                                "description": "Competitor Name."
-                                },
-                                "Description": {
-                                "type": "string",
-                                "description": "Brief business description of the competitor."
-                                },
                                 "Domain": {
                                 "type": "string",
                                 "description": "Website domain of the competitor."
                                 }
                             },
                             "required": [
-                                "Name",
-                                "Description",
                                 "Domain"
                             ],
                             "additionalProperties": false
